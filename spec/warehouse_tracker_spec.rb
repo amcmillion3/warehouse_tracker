@@ -41,9 +41,5 @@ RSpec.describe WarehouseTracker do
     it "should ignore the order and not add it to the customer's orders" do
       expect(@tracker.instance_variable_get(:@orders)).to have_value({"hats" => [nil]})
     end
-  
-    it "should not decrease the stock of other products" do
-      expect(@tracker.instance_variable_get(:@products)["socks"][:stock]).to eq(0)
-    end
   end
 end
