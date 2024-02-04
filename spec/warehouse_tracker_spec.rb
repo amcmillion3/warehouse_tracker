@@ -27,6 +27,23 @@ RSpec.describe WarehouseTracker do
       expect(@tracker.report).to eq(expected_report)
     end
   end
+
+  context "when ordering a product not in the warehouse or not enough stock" do
+    before do
+      @tracker = WarehouseTracker.new
+      commands = [
+        "register socks $3.45",
+        "order kate hats 10"
+      ]
+      @tracker.process_commands(commands)
+    end
+  
+    it "should ignore the order and not add it to the customer's orders" do
+      expect(@tracker.instance_variable_get(:@orders)).to have_value({"hats" => [nil]})
+    end
+  
+    it "should not decrease the stock of other products" do
+      expect(@tracker.instance_variable_get(:@products)["socks"][:stock]).to eq(0)
+    end
+  end
 end
-
-
